@@ -4,10 +4,8 @@ using Unity.Mathematics;
 
 namespace MNP.Helpers
 {
-    [BurstCompile]
     public static class EasingFunctionHelper
     {
-        [BurstCompile]
         public static float GetEase(FixedList128Bytes<float4> keyFrameList, float t)
         {
             for (int i = 0; i < keyFrameList.Capacity; i++)
@@ -31,7 +29,6 @@ namespace MNP.Helpers
             return float.NaN;
         }
 
-        [BurstCompile]
         public static float HermiteInterpolate(float p0, float p1, float m0, float m1, float t)
         {
             if (t <= 0)

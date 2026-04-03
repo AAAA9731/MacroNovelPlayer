@@ -6,6 +6,7 @@ namespace MNP.Core.DOTS.Systems
 {
     [UpdateInGroup(typeof(MNPSystemGroup))]
     [UpdateAfter(typeof(PreprocessingSystem))]
+    [DisableAutoCreation]
     public partial struct PropertyLerpSystem : ISystem
     {
         [BurstCompile]
@@ -16,7 +17,7 @@ namespace MNP.Core.DOTS.Systems
             state.Dependency = new Animation3DLerpJob().ScheduleParallel(state.Dependency);
             state.Dependency = new Animation4DLerpJob().ScheduleParallel(state.Dependency);
             state.CompleteDependency();
-            new AnimationStringJob().Run();
+            //new AnimationStringJob().Run();
         }
     }
 }

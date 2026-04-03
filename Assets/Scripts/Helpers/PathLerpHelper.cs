@@ -1,37 +1,30 @@
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 
 namespace MNP.Helpers
 {
-    [BurstCompile]
     public static class PathLerpHelper
     {
-        [BurstCompile]
         public static float Lerp1DLinear(float start, float end, float t)
         {
             return start * (1 - t) + end * t;
         }
 
-        [BurstCompile]
         public static float2 Lerp2DLinear(float2 start, float2 end, float t)
         {
             return start * (1 - t) + end * t;
         }
 
-        [BurstCompile]
         public static float3 Lerp3DLinear(float3 start, float3 end, float t)
         {
             return start * (1 - t) + end * t;
         }
         
-        [BurstCompile]
         public static float4 Lerp4DLinear(float4 start, float4 end, float t)
         {
             return start * (1 - t) + end * t;
         }
         
-        [BurstCompile]
         public static float2 GetBezierPoint2D(in float2 P0, in float2 P1, in float2 P2, in float2 P3, float t)
         {
             float u = 1 - t;
@@ -46,7 +39,6 @@ namespace MNP.Helpers
             return result;
         }
         
-        [BurstCompile]
         public static float3 GetBezierPoint3D(in float3 P0, in float3 P1, in float3 P2, in float3 P3, float t)
         {
             float u = 1 - t;
@@ -61,7 +53,6 @@ namespace MNP.Helpers
             return result;
         }
         
-        [BurstCompile]
         public static float4 GetBezierPoint4D(in float4 P0, in float4 P1, in float4 P2, in float4 P3, float t)
         {
             float u = 1 - t;
@@ -76,7 +67,6 @@ namespace MNP.Helpers
             return result;
         }
         
-        [BurstCompile]
         public static float2 GetAverageBezierPoint2D(in float2 P0, in float2 P1, in float2 P2, in float2 P3, in FixedList128Bytes<float2> lengthMap, float t)
         {
             UtilityHelper.GetFloorIndexInNativeContainer(lengthMap, x => x.x, t, out int mapIndex);
@@ -87,7 +77,6 @@ namespace MNP.Helpers
             return GetBezierPoint2D(P0, P1, P2, P3, averageT);
         }
         
-        [BurstCompile]
         public static float3 GetAverageBezierPoint3D(in float3 P0, in float3 P1, in float3 P2, in float3 P3, in FixedList128Bytes<float2> lengthMap, float t)
         {
             UtilityHelper.GetFloorIndexInNativeContainer(lengthMap, x => x.x, t, out int mapIndex);
@@ -98,7 +87,6 @@ namespace MNP.Helpers
             return GetBezierPoint3D(P0, P1, P2, P3, averageT);
         }
         
-        [BurstCompile]
         public static float4 GetAverageBezierPoint4D(in float4 P0, in float4 P1, in float4 P2, in float4 P3, in FixedList128Bytes<float2> lengthMap, float t)
         {
             UtilityHelper.GetFloorIndexInNativeContainer(lengthMap, x => x.x, t, out int mapIndex);
@@ -109,7 +97,6 @@ namespace MNP.Helpers
             return GetBezierPoint4D(P0, P1, P2, P3, averageT);
         }
         
-        [BurstCompile]
         public static float4 SLerp4DLinear(float4 start, float4 end, float t)
         {
             float dot = math.dot(start, end);
@@ -133,7 +120,6 @@ namespace MNP.Helpers
             return start * math.cos(theta) + q * math.sin(theta);
         }
 
-        [BurstCompile]
         public static float4 GetSquadPoint4D(in float4 q0, in float4 q01, in float4 q01_1q12, in float4 q12_1q23, float t)
         {
             if (t == 0)
@@ -146,7 +132,6 @@ namespace MNP.Helpers
             return QuaternionHelper.Mul(q0, bctdttt);
         }
         
-        [BurstCompile]
         public static float4 GetAverageSquadPoint4D(in float4 q0, in float4 q01, in float4 q01_1q12, in float4 q12_1q23, in FixedList128Bytes<float2> lengthMap, float t)
         {
             UtilityHelper.GetFloorIndexInNativeContainer(lengthMap, x => x.x, t, out int mapIndex);
@@ -170,7 +155,6 @@ namespace MNP.Helpers
             return result;
         }
 
-        [BurstCompile]
         public static float GetLengthAtParameter2D(in float2 P0, in float2 P1, in float2 P2, in float2 P3, float fromT = 0f, float toT = 1f)
         {
             const int segments = 20;
@@ -187,7 +171,6 @@ namespace MNP.Helpers
             return length;
         }
 
-        [BurstCompile]
         public static float GetLengthAtParameter3D(in float3 P0, in float3 P1, in float3 P2, in float3 P3, float fromT = 0f, float toT = 1f)
         {
             const int segments = 20;
@@ -204,7 +187,6 @@ namespace MNP.Helpers
             return length;
         }
 
-        [BurstCompile]
         public static float GetLengthAtParameter4D(in float4 P0, in float4 P1, in float4 P2, in float4 P3, float fromT = 0f, float toT = 1f)
         {
             const int segments = 20;
@@ -221,7 +203,6 @@ namespace MNP.Helpers
             return length;
         }
 
-        [BurstCompile]
         public static float GetLengthAtSquadParameter4D(in float4 P0, in float4 P1, in float4 P2, in float4 P3, float fromT = 0f, float toT = 1f)
         {
             const int segments = 20;

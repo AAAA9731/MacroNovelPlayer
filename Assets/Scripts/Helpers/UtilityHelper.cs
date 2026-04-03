@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
 namespace MNP.Helpers
 {
-    [BurstCompile]
     public static class UtilityHelper
     {
         public const string Transorm2DPositionID = "Transform2D_Position";
@@ -23,7 +20,6 @@ namespace MNP.Helpers
 
         public const float InterruptTorloance = 0.005f;
 
-        [BurstCompile]
         public static void GetFloorIndexInBufferWithLength<T>(in DynamicBuffer<T> valueBuffer, Func<T, float> startConverter, Func<T, float> lengthConverter, float referenceValue, out int resultIndex, out float fixedT) where T : unmanaged
         {
             int index = 0;
@@ -48,7 +44,6 @@ namespace MNP.Helpers
             fixedT = (referenceValue - startConverter.Invoke(valueBuffer[index])) / duration;
         }
 
-        [BurstCompile]
         public static void GetFloorIndexInNativeContainer<T>(in INativeList<T> valueContainer, Func<T, float> converter, float referenceValue, out int resultIndex) where T : unmanaged
         {
             int index = 0;
@@ -93,7 +88,6 @@ namespace MNP.Helpers
             resultIndex = index;
         }
         
-        [BurstCompile]
         public static float4 CharToFloat4(char character)
         {
             byte[] utf8Bytes = System.Text.Encoding.UTF8.GetBytes(new[] { character });
@@ -106,7 +100,6 @@ namespace MNP.Helpers
             return result;
         }
         
-        [BurstCompile]
         public static char Float4ToChar(float4 encoded)
         {
             int byteLength = (int)encoded.w;
