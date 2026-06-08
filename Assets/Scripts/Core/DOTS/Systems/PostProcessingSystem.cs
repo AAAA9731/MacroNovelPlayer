@@ -2,7 +2,6 @@ using MNP.Core.DOTS.Jobs;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace MNP.Core.DOTS.Systems
 {
@@ -10,43 +9,13 @@ namespace MNP.Core.DOTS.Systems
     [UpdateAfter(typeof(PropertyLerpSystem))]
     public partial struct PostprocessingSystem : ISystem
     {
-        public NativeArray<float4> PropertyArray;
+        public NativeArray<float> PropertyArray;
         
         [BurstCompile]
         void OnUpdate(ref SystemState state)
         {
-            state.Dependency = new Postprocess1DJob()
-            {
-                OutputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new Postprocess2DJob()
-            {
-                OutputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new Postprocess3DJob()
-            {
-                OutputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new Postprocess4DJob()
-            {
-                OutputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new PostprocessDependency1DJob()
-            {
-                InputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new PostprocessDependency2DJob()
-            {
-                InputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new PostprocessDependency3DJob()
-            {
-                InputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
-            state.Dependency = new PostprocessDependency4DJob()
-            {
-                InputArray = PropertyArray
-            }.ScheduleParallel(state.Dependency);
+            state.Dependency = new PostprocessPropertyJob()
+                .ScheduleParallel(state.Dependency);
             state.Dependency = new PostprocessTransform2DJob()
             {
                 InputArray = PropertyArray

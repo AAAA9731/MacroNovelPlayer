@@ -1,11 +1,13 @@
-using UnityEngine;
+using Unity.Burst;
+using Unity.Mathematics;
 
 namespace MNP.Core.DataStruct
 {
-    public class Transform3D
+    [BurstCompile]
+    public struct Transform3D
     {
-        public Vector3 Position;
-        public Vector4 Rotation;
-        public Vector3 Scale;
+        public float3 Position;
+        public float4 Rotation;
+        public float3 Scale;
     }
 }

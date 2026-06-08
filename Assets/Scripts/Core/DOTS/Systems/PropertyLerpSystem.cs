@@ -11,12 +11,8 @@ namespace MNP.Core.DOTS.Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            state.Dependency = new Animation1DLerpJob().ScheduleParallel(state.Dependency);
-            state.Dependency = new Animation2DLerpJob().ScheduleParallel(state.Dependency);
-            state.Dependency = new Animation3DLerpJob().ScheduleParallel(state.Dependency);
-            state.Dependency = new Animation4DLerpJob().ScheduleParallel(state.Dependency);
+            state.Dependency = new AnimationSegmentLerpJob().ScheduleParallel(state.Dependency);
             state.CompleteDependency();
-            new AnimationStringJob().Run();
         }
     }
 }

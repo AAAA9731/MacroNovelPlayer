@@ -1,11 +1,14 @@
-// UnlitInstancedTransparent.shader
-Shader "Custom/UnlitInstancedTransparent"
+// UnlitInstancedTransparent2DBatch.shader
+Shader "Custom/UnlitInstancedTransparent2DBatch"
 {
     Properties
     {
-        _MainTex ("_MainTex", 2D) = "white" {}
+        _MainTexArray ("Texture Array", 2DArray) = "" {}
         _Color ("Color", Color) = (1,1,1,1)
         _Cutoff ("Alpha Cutoff", Range(0.0, 1.0)) = 0.1
+        _TextureIndex ("Texture Index", Float) = 0
+        _TextureWidth ("Image Width", Float) = 1
+        _TextureHeight ("Image Height", Float) = 1
     }
     
     SubShader
@@ -30,6 +33,7 @@ Shader "Custom/UnlitInstancedTransparent"
             #pragma multi_compile_instancing
             #pragma multi_compile_fog
             #pragma multi_compile _ _ALPHATEST_ON
+            #pragma target 3.5
             
             #include "UnityCG.cginc"
 
@@ -44,16 +48,19 @@ Shader "Custom/UnlitInstancedTransparent"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                nointerpolation float texIndex : TEXCOORD2;
                 UNITY_FOG_COORDS(1)
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            UNITY_DECLARE_TEX2DARRAY(_MainTexArray);
             float _Cutoff;
             
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+                UNITY_DEFINE_INSTANCED_PROP(float, _TextureIndex)
+                UNITY_DEFINE_INSTANCED_PROP(float, _TextureWidth)
+                UNITY_DEFINE_INSTANCED_PROP(float, _TextureHeight)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             v2f vert (appdata v)
@@ -61,8 +68,13 @@ Shader "Custom/UnlitInstancedTransparent"
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+
+                float2 scale = float2( UNITY_ACCESS_INSTANCED_PROP(Props, _TextureWidth),  UNITY_ACCESS_INSTANCED_PROP(Props, _TextureHeight));
+                float4 scaledVertex = float4(v.vertex.x * scale.x, v.vertex.y * scale.y, v.vertex.z, v.vertex.w);
+
+                o.vertex = UnityObjectToClipPos(scaledVertex);
+                o.uv = v.uv;
+                o.texIndex = UNITY_ACCESS_INSTANCED_PROP(Props, _TextureIndex);
                 UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
@@ -70,9 +82,11 @@ Shader "Custom/UnlitInstancedTransparent"
             fixed4 frag (v2f i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
-                
+
+                float2 uv = i.uv;
+
+                fixed4 texColor = UNITY_SAMPLE_TEX2DARRAY(_MainTexArray, float3(uv, i.texIndex));
                 fixed4 instanceColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-                fixed4 texColor = tex2D(_MainTex, i.uv);
                 fixed4 finalColor = texColor * instanceColor;
                 
                 #if defined(_ALPHATEST_ON)

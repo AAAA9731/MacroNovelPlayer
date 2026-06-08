@@ -1,11 +1,9 @@
 using MNP.Core.DOTS.Components;
-using MNP.Core.DOTS.Components.LerpRuntime;
 using MNP.Core.DOTS.Jobs;
 using MNP.Core.Misc;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 
 namespace MNP.Core.DOTS.Systems
 {
@@ -34,8 +32,8 @@ namespace MNP.Core.DOTS.Systems
         float? resetTime;
         bool pauseTime;
 
-        NativeList<uint> interruptIDList;
-        NativeList<uint> resumeIDList;
+        NativeList<int> interruptIDList;
+        NativeList<int> resumeIDList;
 
         bool resumeAllInterrupt;
         bool interruptAll;
@@ -61,10 +59,6 @@ namespace MNP.Core.DOTS.Systems
             timer.Stop();
 
             bool stop = true;
-            foreach (EnabledRefRO<LerpEnabledComponent> lerpEnabled in SystemAPI.Query<EnabledRefRO<LerpEnabledComponent>>())
-            {
-                stop &= !lerpEnabled.ValueRO;
-            }
             if (stop)
             {
                 if (StopEnd)
@@ -164,12 +158,12 @@ namespace MNP.Core.DOTS.Systems
             timer.Dispose();
         }
 
-        public void Interrupt(uint id)
+        public void Interrupt(int id)
         {
             interruptIDList.Add(id);
         }
 
-        public void Resume(uint id)
+        public void Resume(int id)
         {
             resumeIDList.Add(id);
         }

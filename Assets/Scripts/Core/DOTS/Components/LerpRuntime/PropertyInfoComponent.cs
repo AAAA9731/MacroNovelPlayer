@@ -8,6 +8,5 @@ namespace MNP.Core.DOTS.Components.LerpRuntime
     {
         public float StartTime;
         public float EndTime;
-        public bool LerpEnabled;
     }
 }

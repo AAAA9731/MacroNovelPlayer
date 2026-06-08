@@ -1,4 +1,4 @@
-using MNP.Core.DOTS.Components.LerpRuntime;
+using MNP.Core.DOTS.Components;
 using MNP.Core.DOTS.Jobs;
 using Unity.Burst;
 using Unity.Entities;
@@ -12,7 +12,7 @@ namespace MNP.Core.DOTS.Systems
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<InitializedPropertyComponent>();
+            state.RequireForUpdate<BakeReadyComponent>();
         }
 
         [BurstCompile]

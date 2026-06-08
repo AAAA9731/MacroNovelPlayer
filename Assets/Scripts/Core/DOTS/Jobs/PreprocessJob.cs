@@ -7,20 +7,19 @@ namespace MNP.Core.DOTS.Jobs
 {
     [BurstCompile]
     [WithAll(typeof(TimeEnabledComponent))]
-    [WithPresent(typeof(LerpEnabledComponent))]
     public partial struct PreprocessJob : IJobEntity
     {
         [BurstCompile]
-        public void Execute(ref PropertyInfoComponent propertyInfoComponent, in TimeComponent timeComponent, EnabledRefRW<LerpEnabledComponent> lerpEnabledComponent)
+        public void Execute(ref PropertyInfoComponent propertyInfoComponent, in TimeComponent timeComponent, EnabledRefRW<TimeEnabledComponent> timeEnabledComponent)
         {
             if (timeComponent.Time < propertyInfoComponent.StartTime ||
                 timeComponent.Time > propertyInfoComponent.EndTime)
             {
-                lerpEnabledComponent.ValueRW = false;
+                timeEnabledComponent.ValueRW = false;
             }
             else
             {
-                lerpEnabledComponent.ValueRW = true;
+                timeEnabledComponent.ValueRW = true;
             }
         }
     }

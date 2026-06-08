@@ -12,13 +12,6 @@ namespace MNP.Core.DataStruct
         public List<MNObject> Objects;
         public MNResource Resource;
         public float TotalTime;
-        public int TotalPropertyCount
-        {
-            get => Objects.Sum(x => x.Animations.TotalPropertyCount);
-        }
-        public int TotalStringCount
-        {
-            get => Objects.Sum(x => x.Animations.AnimationPropertyStringList.Count);
-        }
+        public int TotalPropertyCount => Objects.Sum(x => x.Animations.AnimationPropertySegmentInfoList.Count);
     }
 }

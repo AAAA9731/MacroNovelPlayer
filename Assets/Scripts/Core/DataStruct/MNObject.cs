@@ -4,14 +4,13 @@ namespace MNP.Core.DataStruct
 {
     public class MNObject
     {
-        public uint ID;
+        public int ID;
         public int TextureID;
+        public int TextureIndex;
         public int Object3DMeshID;
+        public int Object3DMeshIndex;
         public Vector2 Object2DSize;
-        public Vector4 Object2DUV;
         public ObjectType Type;
         public MNAnimation Animations;
-        public uint? DependencyLayerID;
-        public int? DependencyLayerIndex;
     }
 }

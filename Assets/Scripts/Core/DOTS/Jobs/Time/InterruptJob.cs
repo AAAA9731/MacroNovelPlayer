@@ -10,7 +10,7 @@ namespace MNP.Core.DOTS.Jobs
     public partial struct InterruptJob : IJobEntity
     {
         [ReadOnly]
-        public NativeArray<uint> IDArray;
+        public NativeArray<int> IDArray;
 
         public void Execute(in ElementComponent element, EnabledRefRW<InterruptComponent> interruptComponent)
         {

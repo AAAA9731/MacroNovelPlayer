@@ -1,11 +1,13 @@
-using UnityEngine;
+using Unity.Burst;
+using Unity.Mathematics;
 
 namespace MNP.Core.DataStruct
 {
-    public class Transform2D
+    [BurstCompile]
+    public struct Transform2D
     {
-        public Vector2 Position;
+        public float2 Position;
         public float Rotation;
-        public Vector2 Scale;
+        public float2 Scale;
     }
 }

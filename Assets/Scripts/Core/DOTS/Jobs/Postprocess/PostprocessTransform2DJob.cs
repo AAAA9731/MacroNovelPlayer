@@ -11,14 +11,15 @@ namespace MNP.Core.DOTS.Jobs
     public partial struct PostprocessTransform2DJob : IJobEntity
     {
         [ReadOnly] 
-        public NativeArray<float4> InputArray;
+        public NativeArray<float> InputArray;
         
         [BurstCompile]
         public void Execute(ref ElementComponent elementComponent)
         {
-            float3 pos = InputArray[elementComponent.TransformPositionIndex].xyz;
-            quaternion rot = quaternion.RotateZ(math.radians(InputArray[elementComponent.TransformRotationIndex].x));
-            float3 scl = InputArray[elementComponent.TransformScaleIndex].xyz * elementComponent.Object2DSize.xyx;
+            NativeSlice<float> values = InputArray.Slice(elementComponent.PropertyIndex, 5);
+            float3 pos = new(values[0], values[1], 0);
+            quaternion rot = quaternion.RotateZ(math.radians(values[2]));
+            float3 scl = new(values[3], values[4], 1);
             elementComponent.TransformMatrix = float4x4.TRS(pos, rot, scl);
         }
     }

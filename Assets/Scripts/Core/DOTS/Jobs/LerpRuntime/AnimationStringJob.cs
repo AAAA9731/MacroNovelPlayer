@@ -6,12 +6,12 @@ using Unity.Entities;
 namespace MNP.Core.DOTS.Jobs
 {
     [WithAll(typeof(TimeEnabledComponent))]
-    [WithPresent(typeof(InterruptComponent), typeof(LerpEnabledComponent))]
+    [WithPresent(typeof(InterruptComponent))]
     public partial struct AnimationStringJob : IJobEntity
     {
-        public void Execute(AnimationStringListComponent animationStringList, PropertyStringComponent propertyStringComponent, in TimeComponent timeComponent, EnabledRefRO<InterruptComponent> interruptComponent, EnabledRefRO<TimeEnabledComponent> _, EnabledRefRO<LerpEnabledComponent> lerpEnabledComponent)
+        public void Execute(AnimationStringListComponent animationStringList, PropertyStringComponent propertyStringComponent, in TimeComponent timeComponent, EnabledRefRO<InterruptComponent> interruptComponent, EnabledRefRO<TimeEnabledComponent> _)
         {
-            if (interruptComponent.ValueRO || !lerpEnabledComponent.ValueRO) 
+            if (interruptComponent.ValueRO) 
             {
                 return;
             }

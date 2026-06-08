@@ -7,7 +7,8 @@ namespace MNP.Core.DOTS.Components
     public struct TimeComponent : IComponentData
     {
         public float Time;
-
+        public int AnimationIndex;
+        public float AnimationT;
         public int InterrputedTime;
     }
 }

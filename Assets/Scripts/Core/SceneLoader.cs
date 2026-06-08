@@ -29,10 +29,10 @@ namespace MNP.Core
             IProgress<float> progress = new Progress<float>(UpdateBar);
             SceneBaker baker = new()
             {
-                TextInstance = TextInstance
+                //TextInstance = TextInstance
             };
             Hint.text = "加载资源...";
-            List<Texture2D> textures = new();
+            List<Texture2DArray> textures = new();
             List<Mesh> meshes = new();
             Queue<string> textureQueue = new();
             Queue<string> meshQueue = new();
@@ -54,7 +54,7 @@ namespace MNP.Core
                     return false;
                 }
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
-                textures.Add(texture);
+                //textures.Add(texture);
                 await UniTask.Yield();
             }
             while (meshQueue.Count > 0)
@@ -79,13 +79,13 @@ namespace MNP.Core
                 await UniTask.Yield();
             }
             OutputSystem system = World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<OutputSystem>();
-            system.Textures = textures;
+            system.Texture2Ds = textures;
             system.Mesh3Ds = meshes;
-            Debug.Log($"项目{project.Name}资源加载完毕，共{system.Textures.Count}张贴图，{system.Mesh3Ds.Count}份模型网格");
+            Debug.Log($"项目{project.Name}资源加载完毕，共{system.Texture2Ds.Count + system.Texture3Ds.Count}张贴图，{system.Mesh3Ds.Count}份模型网格");
             Hint.text = "加载元素...";
             await baker.BakeElements(project.Objects, progress);
             float totalTime = Time.time - time;
-            Debug.Log($"加载完成，共加载了{project.Objects.Count}个物体，共{project.TotalPropertyCount + project.TotalStringCount}个动画属性，共耗时{totalTime}s");
+            Debug.Log($"加载完成，共加载了{project.Objects.Count}个物体，共{project.TotalPropertyCount}个动画属性，共耗时{totalTime}s");
             Hint.text = "加载完毕";
             return true;
         }
